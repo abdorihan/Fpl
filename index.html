@@ -1,0 +1,220 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+</head>
+<body>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #eaf7e2;
+            border-radius: 10px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #a3d9a5;
+        }
+        th {
+            background-color: #4caf50;
+            color: white;
+            font-size: 1.2em;
+        }
+        tr:nth-child(even) {
+            background-color: #d3f2d3;
+        }
+        tr:hover {
+            background-color: #b1e0b1;
+        }
+        td.team-name {
+            font-weight: bold;
+        }
+        td.score {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .winner {
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+<script>
+
+var teams = [{"team":"راس الهلال","teamID":"620517","manager":"حسين الحصادى","managerID":"1820467","members":[{"managerID":150948,"manager":"Hemo 95"},{"managerID":1820467,"manager":"حسين الحصادى"},{"managerID":115424,"manager":"Ahmed Madridista"}]},{"team":"درنه","teamID":"733609","manager":"Btmah Elgrgani","managerID":"2041309","members":[{"managerID":2041309,"manager":"Btmah Elgrgani"},{"managerID":2146703,"manager":"Hassan Emtiareed"},{"managerID":74465,"manager":"Hassan Elhassadi"}]},{"team":"اوجلة","teamID":"733593","manager":"Medo AlAujali","managerID":"234658","members":[{"managerID":234658,"manager":"Medo AlAujali"},{"managerID":227105,"manager":"Walid Lagha"},{"managerID":141019,"manager":"Adel Dehom"}]},{"team":"مصراتة","teamID":"702630","manager":"Adam Bentaher","managerID":"341708","members":[{"managerID":341708,"manager":"Adam Bentaher"},{"managerID":454592,"manager":"Mohamed Ismail"},{"managerID":562339,"manager":"Magdy Mahjoub"}]},{"team":"الأبيار","teamID":"506372","manager":"Ahmad Fadli","managerID":"51674","members":[{"managerID":51674,"manager":"Ahmad Fadli"},{"managerID":1549557,"manager":"Misbah Omran"},{"managerID":1534561,"manager":"Mohammed Elhammali"}]},{"team":"الهضبة","teamID":"733921","manager":"BINCO NIRO SELLEWA","managerID":"3547039","members":[{"managerID":1473137,"manager":"Aiman Albakosh"},{"managerID":3547039,"manager":"BINCO NIRO SELLEWA"},{"managerID":2864835,"manager":"mohsen altabib"}]},{"team":"الفرناج","teamID":"945988","manager":"mohamed alhemali","managerID":"204684","members":[{"managerID":2075961,"manager":"Mohamed Abdullah"},{"managerID":22991,"manager":"ABSY KRYEAM"},{"managerID":204684,"manager":"mohamed alhemali"}]},{"team":"جالو","teamID":"733635","manager":"Azo Fathi","managerID":"708263","members":[{"managerID":842575,"manager":"TREAL Xz"},{"managerID":708263,"manager":"Azo Fathi"},{"managerID":351122,"manager":"Ahmed Almahdi"}]},{"team":"المحجوب","teamID":"1143832","manager":"mohammed omar _inter","managerID":"4360973","members":[{"managerID":4360973,"manager":"mohammed omar _inter"},{"managerID":2739382,"manager":"amjad ben wafa"},{"managerID":4351628,"manager":"akram wafa"}]},{"team":"القرضابية","teamID":"820887","manager":"Husain Abdallah","managerID":"173075","members":[{"managerID":248634,"manager":"Amjed Mohammed"},{"managerID":1773222,"manager":"Abdo Juve10"},{"managerID":173075,"manager":"Husain Abdallah"}]},{"team":"بنغازي","teamID":"703029","manager":"Ahmed ElDressi","managerID":"7743","members":[{"managerID":1829908,"manager":"zoga yasmina"},{"managerID":2869240,"manager":"Agila Elkadiki"},{"managerID":7743,"manager":"Ahmed ElDressi"}]},{"team":"طرابلس","teamID":"620374","manager":"Salem Fituri","managerID":"66371","members":[{"managerID":697116,"manager":"Ali Alshaafi"},{"managerID":496496,"manager":"Ismail Shabash👑"},{"managerID":66371,"manager":"Salem Fituri"}]},{"team":"سوق الجمعة","teamID":"734572","manager":"MOHAMMED BIN TAHER","managerID":"3491895","members":[{"managerID":62901,"manager":"علي الفارسي"},{"managerID":3491895,"manager":"MOHAMMED BIN TAHER"},{"managerID":56189,"manager":"راشد ابوخريص"}]},{"team":"سبها","teamID":"675899","manager":"Mohamed Boshnaf","managerID":"116549","members":[{"managerID":116549,"manager":"Mohamed Boshnaf"},{"managerID":235797,"manager":"Ahmed Alzwawy"},{"managerID":1756038,"manager":"باسم باسم"}]},{"team":"غريان","teamID":"1816035","manager":"Motsam Borke","managerID":"34139","members":[{"managerID":6814384,"manager":"Yahya Gheit"},{"managerID":34139,"manager":"Motsam Borke"},{"managerID":4743296,"manager":"Abdo Saeed"}]},{"team":"الخمس","teamID":"296750","manager":"Mohamed AlTamali","managerID":"238567","members":[{"managerID":6058049,"manager":"Barry Elmadani 🇵🇸🇱🇾"},{"managerID":1619458,"manager":"دجيم مدريديستا"},{"managerID":238567,"manager":"Mohamed AlTamali"}]},{"team":"الضهرة","teamID":"499837","manager":"Mohamed Nasser","managerID":"436428","members":[{"managerID":3510724,"manager":"محمد الغراري"},{"managerID":436428,"manager":"Mohamed Nasser"},{"managerID":2631310,"manager":"محسن جمعه"}]},{"team":"هون","teamID":"733931","manager":"الوليد العطشان","managerID":"2922695","members":[{"managerID":2526957,"manager":"Othman Mrsoka"},{"managerID":2922695,"manager":"الوليد العطشان"},{"managerID":966928,"manager":"loay dbrey"}]},{"team":"القطرون","teamID":"702895","manager":"Rabie Omer","managerID":"56375","members":[{"managerID":3657733,"manager":"Ahmed meshaal"},{"managerID":56375,"manager":"Rabie Omer"},{"managerID":1611510,"manager":"alsharif Jarwah"}]},{"team":"زليتن","teamID":"704927","manager":"حسن اسبيقه","managerID":"1981500","members":[{"managerID":3894220,"manager":"Anas Aziz"},{"managerID":198027,"manager":"احمد المغربي"},{"managerID":1981500,"manager":"حسن اسبيقه"}]}];
+
+
+function createCORSRequest(method, url) {
+var xhr = new XMLHttpRequest();
+if ("withCredentials" in xhr) {
+	xhr.open(method, url);
+  //   xhr.setRequestHeader("Content-Type", "multipart/form-data");
+} else if (typeof XDomainRequest != "undefined") {
+	xhr = new XDomainRequest();
+	xhr.open(method, url);
+} else {
+	xhr = null;
+}
+//xhr.setRequestHeader("Access-Control-Allow-Origin", "http://156.38.57.79");
+//xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
+return xhr;
+}
+function onLoad(){
+/*
+try{
+let a = axios.get("https://thingproxy.freeboard.io/fetch/https://fantasy.premierleague.com/api/entry/341708/history"
+).then(function(aa) {
+	alert("aaaaaaaaaaaaaaaaaaaa" + aa);
+}).catch(function (error) {
+    // handle error
+    alert(JSON.stringify(error));
+	console.log(error);
+  });
+alert (JSON.stringify(a));
+}catch(e){alert(e);}
+*/
+	try{
+	document.getElementById("content").value = "";
+	document.getElementById("rows").innerHTML = "";
+	let numberOfTeams = 0;
+    for(let i =0;i< teams.length;i++){
+		teams[i].points = 0;
+		teams[i].teamCounter = 0;
+		for(let j =0;j<teams[i].members.length;j++){
+			let member = teams[i].members[j];
+			
+			fetch(`https://api.allorigins.win/get?url=https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fentry%2F${member.managerID}%2Fhistory%2F`)
+                    .then(response => {
+                    	console.log(response.ok);
+                      if (response.ok) return response.json()
+                      throw new Error('Network response was not ok.')
+                    })
+                    .then(data => {
+                    	data = JSON.parse(data.contents);
+			 console.log(data);
+ if (data){
+				
+				teams[i].teamCounter++;
+				numberOfTeams++;
+				let mem = data.current.pop();
+				teams[i].points += (mem.points - mem.event_transfers_cost);
+				if(teams[i].teamCounter == 3){
+					if(teams[i].points == 0){console.log(teams[i])}
+					document.getElementById("content").value += "\n" + teams[i].team + "("+teams[i].points+")";
+				}
+				if(numberOfTeams == 20){
+					DoMatches();
+				}
+			  } else {
+			  }
+
+});
+                    
+                    
+			/*let req =  createCORSRequest("get", `https://api.allorigins.win/get?url=https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fentry%2F${member.managerID}%2Fhistory%2F`);
+			req.onload = function(data) {
+				console.log(data.responseText);
+			   data = JSON.parse(req.contents);
+			  if (data){
+				teams[i].teamCounter++;
+				numberOfTeams++;
+				let mem = data.current.pop();
+				teams[i].points += (mem.points - mem.event_transfers_cost);
+				if(teams[i].teamCounter == 3){
+					if(teams[i].points == 0){console.log(teams[i])}
+					document.getElementById("content").value += "\n" + teams[i].team + "("+teams[i].points+")";
+				}
+				if(numberOfTeams == 20){
+					DoMatches();
+				}
+			  } else {
+			  }
+			};
+			req.send();*/
+		}
+		
+	}
+	
+		
+	}catch(e){alert(e)}
+}
+function DoMatches () {
+let matchesRows = "";
+	let event = document.getElementById("event").value;
+	if(!event) return;
+   fetch(`https://api.allorigins.win/get?url=https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fleagues-h2h-matches%2Fleague%2F702468%2F%3Fevent%3D${event}`)
+                    .then(response => {
+                    	console.log(response.ok);
+                      if (response.ok) return response.json()
+                      throw new Error('Network response was not ok.')
+                    })
+                    .then(data => {
+                    	data = JSON.parse(data.contents);
+                       if (data ){
+		for(let i =0;i<data.results.length;i++){
+			let match = data.results[i];
+			let manager1 = match.entry_1_entry;
+			let manager2 = match.entry_2_entry;
+			let team1 = teams.filter(d=>d.managerID == manager1)[0];
+			let team2 = teams.filter(d=>d.managerID == manager2)[0];
+			let winner1 = team1.points > team2.points;
+			let winner2 = team1.points < team2.points;
+			if(team1.points == 0){console.log(team1)}
+			//document.getElementById("content").value += "\n" + team1.team + "("+ team1.points +") vs " + team2.team + "("+ team2.points +")";
+			document.getElementById("rows").innerHTML += '<tr><td class="team-name '+(winner1? 'winner':'')+'">'+team1.team+'</td><td class="score">'+ team1.points +' - '+ team2.points +'</td><td class="team-name '+(winner2? 'winner':'')+'">'+team2.team+'</td></tr>';
+		}
+	  } else {
+	  }
+                    })
+                    
+
+
+	/*let req =  createCORSRequest("get", `https://api.allorigins.win/get?url=https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fleagues-h2h-matches%2Fleague%2F702468%2F%3Fevent%3D${event}`);
+	req.onload = function(data) {
+	  var data = JSON.parse(req.contents);
+	  if (data ){
+		for(let i =0;i<data.results.length;i++){
+			let match = data.results[i];
+			let manager1 = match.entry_1_entry;
+			let manager2 = match.entry_2_entry;
+			let team1 = teams.filter(d=>d.managerID == manager1)[0];
+			let team2 = teams.filter(d=>d.managerID == manager2)[0];
+			let winner1 = team1.points > team2.points;
+			let winner2 = team1.points < team2.points;
+			if(team1.points == 0){console.log(team1)}
+			//document.getElementById("content").value += "\n" + team1.team + "("+ team1.points +") vs " + team2.team + "("+ team2.points +")";
+			document.getElementById("rows").innerHTML += '<tr><td class="team-name '+(winner1? 'winner':'')+'">'+team1.team+'</td><td class="score">'+ team1.points +' - '+ team2.points +'</td><td class="team-name '+(winner2? 'winner':'')+'">'+team2.team+'</td></tr>';
+		}
+	  } else {
+	  }
+	};
+	req.send();*/
+}
+ 
+</script>
+<input type='text' id="event" />
+<button id="load" name="load" onclick="onLoad()">Load</button><br/>
+<textarea id="content"></textarea>
+
+<table>
+        <thead>
+            <tr>
+                <th>Home</th>
+                <th>Score</th>
+                <th>Away</th>
+            </tr>
+        </thead>
+        <tbody id="rows">
+            
+        </tbody>
+    </table>
+ 
+</body>
+</html>
