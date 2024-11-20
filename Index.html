@@ -89,7 +89,7 @@ alert (JSON.stringify(a));
 		teams[i].teamCounter = 0;
 		for(let j =0;j<teams[i].members.length;j++){
 			let member = teams[i].members[j];
-			let req =  createCORSRequest("get", `${(`https://corsproxy.io/?https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fentry%2F${member.managerID}%2Fhistory%2F`);
+			let req =  createCORSRequest("get", `https://corsproxy.io/?https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fentry%2F${member.managerID}%2Fhistory%2F`);
 			req.onload = function(data) {
 			  var data = JSON.parse(req.responseText);
 			  if (data){
