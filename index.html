@@ -67,6 +67,8 @@ if ("withCredentials" in xhr) {
 return xhr;
 }
 function onLoad(){
+let event = document.getElementById("event").value;
+	if(!event) return;
 /*
 try{
 let a = axios.get("https://thingproxy.freeboard.io/fetch/https://fantasy.premierleague.com/api/entry/341708/history"
