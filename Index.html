@@ -89,7 +89,7 @@ alert (JSON.stringify(a));
 		teams[i].teamCounter = 0;
 		for(let j =0;j<teams[i].members.length;j++){
 			let member = teams[i].members[j];
-			let req =  createCORSRequest("get", `https://api.allorigins.win/get?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/entry/${member.managerID}/history/`)}`);
+			let req =  createCORSRequest("get", `https://api.allorigins.win/get?url=https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fentry%2F${member.manageID}%2Fhistory%2F`);
 			req.onload = function(data) {
 			  var data = JSON.parse(req.responseText);
 			  if (data){
@@ -118,7 +118,7 @@ alert (JSON.stringify(a));
 function DoMatches () {
 let matchesRows = "";
 	let event = document.getElementById("event").value;
-	let req =  createCORSRequest("get", `https://api.allorigins.win/get?url=${encodeURIComponent(`https://fantasy.premierleague.com/api/leagues-h2h-matches/league/702468/?event=${event}`)}`);
+	let req =  createCORSRequest("get", `https://api.allorigins.win/get?url=https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fleagues-h2h-matches%2Fleague%2F702468%2F%3Fevent%3D${event}`);
 	req.onload = function(data) {
 	  var data = JSON.parse(req.responseText);
 	  if (data ){
