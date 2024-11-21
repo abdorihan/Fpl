@@ -80,7 +80,7 @@ function onLoad(){
     for(let i =0;i< teams.length;i++){
 		teams[i].points = 0;
 		teams[i].teamCounter = 0;
-		let attepts = 0;
+		let attempts = 0;
 		function tryFetch()  {
 		fetch(`https://api.allorigins.win/get?url=https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fleagues-h2h-matches%2Fleague%2F${teams[i].teamID}%2F%3Fevent%3D${event}`)
                     .then(response => {
@@ -88,7 +88,7 @@ function onLoad(){
                       if (response.ok) return response.json();
 					  
 					  if(response.status === 429 && attempts < 3){
-						attepts++;
+						attempts++;
 						//console.log("aaaaa"+attempts);
 						return new Promise(resolve => setTimeout(resolve, 1000)).then(tryFetch);
 					  }
@@ -135,16 +135,17 @@ function onLoad(){
 				    numberOfTeams++;
 					document.getElementById("done").innerHTML =numberOfTeams;
 			    }
-			    if(numberOfTeams == teams.length){
+			    if(numberOfTeams >= teams.length){
 				    DoMatches();
 					document.getElementById("player").innerHTML = bestPlayer;
 					document.getElementById("team").innerHTML = bestTeam;
 			    }
 
 		    }).catch((err)=>{
-				attepts++;
-				return new Promise(resolve => setTimeout(resolve, 500)).then(tryFetch)
-				console.log("aaaaaaaaa", err);
+				attempts++;
+				if(attempts < 5)
+					return new Promise(resolve => setTimeout(resolve, 250)).then(tryFetch)
+				console.log( err);
 			});
 			}
 		setTimeout(tryFetch, i*50);
