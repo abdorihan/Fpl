@@ -80,12 +80,20 @@ function onLoad(){
     for(let i =0;i< teams.length;i++){
 		teams[i].points = 0;
 		teams[i].teamCounter = 0;
-		setTimeout(() => {
+		let attepts = 0;
+		function tryFetch()  {
 		fetch(`https://api.allorigins.win/get?url=https%3A%2F%2Ffantasy.premierleague.com%2Fapi%2Fleagues-h2h-matches%2Fleague%2F${teams[i].teamID}%2F%3Fevent%3D${event}`)
                     .then(response => {
                     	console.log(response.ok);
-                      if (response.ok) return response.json()
-                      throw new Error('Network response was not ok.')
+                      if (response.ok) return response.json();
+					  
+					  if(response.status === 429 && attempts < 3){
+						attepts++;
+						//console.log("aaaaa"+attempts);
+						return new Promise(resolve => setTimeout(resolve, 1000)).then(tryFetch);
+					  }
+					  console.log(response.status);
+                      //throw new Error('Network response was not ok.')
                     })
                     .then(data => {
 			    data = JSON.parse(data.contents);
@@ -133,8 +141,13 @@ function onLoad(){
 					document.getElementById("team").innerHTML = bestTeam;
 			    }
 
-		    });	
-		}, i*300);
+		    }).catch((err)=>{
+				attepts++;
+				return new Promise(resolve => setTimeout(resolve, 500)).then(tryFetch)
+				console.log("aaaaaaaaa", err);
+			});
+			}
+		setTimeout(tryFetch, i*1);
 	}
 }
 
@@ -178,7 +191,7 @@ let matchesRows = "";
 }
  
 </script>
-Gameweek: <input type='text' id="event" />
+Gameweek: <input type='text' id="event" value="10"/>
 <button id="load" name="load" onclick="onLoad()">Load</button><br/>
 <p id="progress"><b id="done">0</b> of 20 are done</p>
 <p>
