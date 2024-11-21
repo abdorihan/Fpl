@@ -69,8 +69,14 @@ function onLoad(){
 	document.getElementById("rows").innerHTML = "";
 	document.getElementById("load").disabled = true;
 	document.getElementById("done").innerHTML = 0;
+	document.getElementById("player").innerHTML = "";
+	document.getElementById("team").innerHTML = "";
 	
 	let numberOfTeams = 0;
+	let bestPlayer = "";
+	let bestPlayerScore = 0;
+	let bestTeam = "";
+	let bestTeamScore = 0;
     for(let i =0;i< teams.length;i++){
 		teams[i].points = 0;
 		teams[i].teamCounter = 0;
@@ -86,22 +92,49 @@ function onLoad(){
 			    if(data && data.results){
 				    for(let j =0;j<data.results.length;j++){
 					    let mem = data.results[j];
-					    teams[i].points += mem.entry_1_entry?mem.entry_1_points:0;
-					    teams[i].points += mem.entry_2_entry?mem.entry_2_points:0;
-					    document.getElementById("content").value += mem.entry_1_entry?"\t" +  mem.entry_1_player_name + "("+mem.entry_1_points+")":"";
-					    document.getElementById("content").value += mem.entry_2_entry?"\t" + mem.entry_2_player_name + "("+mem.entry_2_points+")":"";
+						if(mem.entry_1_entry){
+							teams[i].points += mem.entry_1_points;
+							document.getElementById("content").value += "\t" +  mem.entry_1_player_name + "("+mem.entry_1_points+")";
+							if(mem.entry_1_points == bestPlayerScore){
+								bestPlayer += "\t" + mem.entry_1_player_name + " ("+mem.entry_1_points+")";
+							}
+							if(mem.entry_1_points > bestPlayerScore){
+								bestPlayerScore = mem.entry_1_points;
+								bestPlayer =  mem.entry_1_player_name + " ("+mem.entry_1_points+")";
+							}
+						}
+						
+						if(mem.entry_2_entry){
+							teams[i].points += mem.entry_2_points;
+							document.getElementById("content").value += "\t" +  mem.entry_2_player_name + "("+mem.entry_2_points+")";
+							if(mem.entry_2_points == bestPlayerScore){
+								bestPlayer += "\t" + mem.entry_2_player_name + " ("+mem.entry_2_points+")";
+							}
+							if(mem.entry_2_points > bestPlayerScore){
+								bestPlayerScore = mem.entry_2_points;
+								bestPlayer =  mem.entry_2_player_name + " ("+mem.entry_2_points+")";
+							}
+						}
 				    }
+					if(teams[i].points == bestTeamScore){
+						bestTeam += "\t" + teams[i].team + " ("+bestTeamScore+")";
+					}
+					if(teams[i].points > bestTeamScore){
+						bestTeamScore = teams[i].points;
+						bestTeam =  teams[i].team + " ("+bestTeamScore+")";
+					}
 					document.getElementById("content").value += "\n";
 				    numberOfTeams++;
 					document.getElementById("done").innerHTML =numberOfTeams;
 			    }
 			    if(numberOfTeams == teams.length){
 				    DoMatches();
+					document.getElementById("player").innerHTML = bestPlayer;
+					document.getElementById("team").innerHTML = bestTeam;
 			    }
 
 		    });	
 		}, i*300);
-		console.log('finish');
 	}
 }
 
@@ -131,9 +164,12 @@ let matchesRows = "";
 			//document.getElementById("content").value += "\n" + team1.team + "("+ team1.points +") vs " + team2.team + "("+ team2.points +")";
 			document.getElementById("rows").innerHTML += '<tr><td class="team-name '+(winner1? 'winner':'')+'">'+team1.team+'</td><td class="score">'+ team1.points +' - '+ team2.points +'</td><td class="team-name '+(winner2? 'winner':'')+'">'+team2.team+'</td></tr>';
 		}
+		
 	  } else {
 	  }
                     });
+					
+	
 	
 	document.getElementById("load").disabled =false;
 					
@@ -145,8 +181,12 @@ let matchesRows = "";
 Gameweek: <input type='text' id="event" />
 <button id="load" name="load" onclick="onLoad()">Load</button><br/>
 <p id="progress"><b id="done">0</b> of 20 are done</p>
-<textarea id="content"></textarea><br/><br/><br/>
+<p>
+Best Player: <b id="player"></b><br/>
+Best Team: <b id="team"></b>
+</p>
 
+<textarea id="content"></textarea><br/><br/><br/>
 <table>
         <thead>
             <tr>
